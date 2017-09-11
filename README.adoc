@@ -36,3 +36,4 @@ With the following commands we create an image, container and start the containe
 
   $ ./gradlew buildImage createContainer startContainer
   
+After the container is started we can open `http://localhost:9000/` in our web browser.
