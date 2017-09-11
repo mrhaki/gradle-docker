@@ -8,6 +8,11 @@ description = 'Sample project for Docker Gradle plugin'
 
 docker {
     // Configuration Docker plugin
+    // Default: dockerHost = System.getProperty("docker.host") ?: System.env["DOCKER_HOST"] ?: System.properties['os.name'].toLowerCase().contains('windows') ? 'npipe:////./pipe/docker_engine' : 'unix:///var/run/docker.sock'
+    
+    // Check Gradle project property 'dockerHost' first.
+    // Can be set in gradle.properties or via CLI with -PdockerHost=<value>.
+    dockerHost = project.findProperty('dockerHost') ?: System.getenv('DOCKER_HOST') ?: System.properties['docker.host'] ?: 'unix:///var/run/docker.sock'
 }
 
 dockerConfig {
