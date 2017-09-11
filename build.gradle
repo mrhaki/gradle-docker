@@ -1,3 +1,30 @@
+import com.mrhaki.gradle.docker.DockerManagementPlugin
+
+apply plugin: DockerManagementPlugin
+
 version = '1.0.0'
 
 description = 'Sample project for Docker Gradle plugin'
+
+docker {
+    // Configuration Docker plugin
+}
+
+dockerConfig {
+    // Configuration DockerManagementPlugin
+    imageName = 'gradle-docker/sample'
+    containerName = 'sample-www'
+
+    containerConfiguration = {
+        ports = ['9000:80']
+    }
+    
+}
+
+prepareImage {
+    // Default all files from src/docker are already
+    // copied to build/docker. Here we add extra
+    // sources we want to copy and are needed
+    // to build the Docker image.
+    from 'src/www'
+}
