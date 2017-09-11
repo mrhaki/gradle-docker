@@ -1,0 +1,3 @@
+version = '1.0.0'
+
+description = 'Sample project for Docker Gradle plugin'
