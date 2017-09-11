@@ -1,0 +1,27 @@
+= Docker Gradle sample
+
+This project uses 
+the https://github.com/gesellix/gradle-docker-plugin[Gradle Docker plugin].
+In the `buildSrc` directory is a custom Gradle plugin that creates
+tasks and a custom extension to have a clean DSL to configure
+the Docker images and containers in the project.
+
+== Images
+
+We need to apply the `DockerManagementPlugin` plugin in our project. This adds
+the `buildImage` and `removeImage` tasks to create and remove a 
+local Docker image. The sources are copied from `src/docker` and any
+other custom location with the `prepareImage` task. The `buildImage`
+task depends on this task.
+
+The name of the image is defined in the `dockerConfiguration` extension
+that is added by the `DockerManagementPlugin` plugin.
+
+== Containers
+
+To create a container and start a container we have the tasks
+`createContainer` and `startContainer`. The name of the container
+is defined in the `dockerConfiguration` extension.
+
+To stop a container, run the `stopContainer` task and to remove it
+we run `removeContainer`.
