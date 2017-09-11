@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'de.gesellix:gradle-docker-plugin:2017-08-28T11-19-13'
+    }   
+}
+
+apply plugin: de.gesellix.gradle.docker.DockerPlugin
+
+task prepareImage(type: Copy) {
+    group = 'Docker'
+    
+    from 'src/docker'
+    from 'src/www'
+    into "${buildDir}/docker"
+}
+
+
+import de.gesellix.gradle.docker.tasks.*
+import static de.gesellix.gradle.docker.tasks.DockerContainerTask.State.ABSENT
+import static de.gesellix.gradle.docker.tasks.DockerContainerTask.State.PRESENT
+import static de.gesellix.gradle.docker.tasks.DockerContainerTask.State.STARTED
+import static de.gesellix.gradle.docker.tasks.DockerContainerTask.State.STOPPED
+
+task buildImage(type: DockerBuildTask) {
+    group = 'Docker'
+    dependsOn prepareImage
+    
+    imageName = 'gradle-docker/sample'
+    buildContextDirectory = prepareImage.destinationDir
+    enableBuildLog = true
+}
+
+task removeImage(type: DockerRmiTask) {
+    group = 'Docker'
+
+    imageId = 'gradle-docker/sample'
+}
+
+task createContainer(type: DockerContainerTask) {
+    group = 'Docker'
+
+    targetState = PRESENT
+    image = 'gradle-docker/sample'
+    containerName = 'sample-www'
+    ignoredEnvKeys = ['no_proxy']
+}
+
+task startContainer(type: DockerContainerTask) {
+    group = 'Docker'
+
+    targetState = STARTED
+    image = 'gradle-docker/sample'
+    containerName = 'sample-www'
+    ignoredEnvKeys = ['no_proxy']
+}
+
+task stopContainer(type: DockerContainerTask) {
+    group = 'Docker'
+
+    targetState = STOPPED
+    image = 'gradle-docker/sample'
+    containerName = 'sample-www'
+    ignoredEnvKeys = ['no_proxy']
+}
+
+task removeContainer(type: DockerContainerTask) {
+    group = 'Docker'
+    
+    targetState = ABSENT
+    image = 'gradle-docker/sample'
+    containerName = 'sample-www'
+    ignoredEnvKeys = ['no_proxy']
+}
