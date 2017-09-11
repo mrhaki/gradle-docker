@@ -25,3 +25,14 @@ is defined in the `dockerConfiguration` extension.
 
 To stop a container, run the `stopContainer` task and to remove it
 we run `removeContainer`.
+
+== Sample
+
+This sample project create a Docker image based on `nginx` and with
+custom content that is copied from `src/www`. In `build.gradle` we can
+see how the `prepareImage` task is configured with the extra source dir.
+
+With the following commands we create an image, container and start the container:
+
+  $ ./gradlew buildImage createContainer startContainer
+  
