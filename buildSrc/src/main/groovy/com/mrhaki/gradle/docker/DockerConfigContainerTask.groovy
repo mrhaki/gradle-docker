@@ -10,6 +10,10 @@ class DockerConfigContainerTask extends DockerContainerTask {
     @Input
     @Optional
     List<String> volumesFrom = []
+    
+    @Input
+    @Optional
+    String networkMode 
 
     @Override
     Object createConfig() {
@@ -17,6 +21,10 @@ class DockerConfigContainerTask extends DockerContainerTask {
 
         if (volumesFrom) {
             config.HostConfig.VolumesFrom = volumesFrom
+        }
+        
+        if (networkMode) {
+            config.HostConfig.NetworkMode = networkMode
         }
         
         return config
